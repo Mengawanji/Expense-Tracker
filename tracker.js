@@ -1,75 +1,130 @@
+let totalIncome = 0;
+let totalExpenses = 0;
 
-const expenseForm = document.getElementById('expense-form');
-const expenseInput = document.getElementById('expense-input');
-const amountInput = document.getElementById('amount-input'); 
-const categoryInput = document.getElementById('category-input');
-const transactionList = document.getElementById('transaction-list');
-const totalExpense = document.getElementById('total-expense');
-const totalIncome = document.getElementById('total-income');
-const balance = document.getElementById('balance');
-
-
-// This function handles  handles the addition of a new expense when the form is submitted
-
-expenseForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const description = expenseInput.value.trim();
-    const amount = parseFloat(amountInput.value.trim());
-    const category = categoryInput.value;
-
-    if (description === '' || isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid expense description and amount.');
-        return;
+function addIncome() {
+    const description = document.getElementById('income-description').value;
+    const amount = parseFloat(document.getElementById('income-amount').value);
+    if (description && amount) {
+        totalIncome += amount;
+        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+        addTransactionToHistory(description, 'Income', amount, 'Income');
+        clearInputs(['income-description', 'income-amount']);
+        showModal(); // Show success modal
     }
-
-    addTransaction(description, amount, category);
-    updateSummary();
-    clearInputs();
-});
-
-function addTransaction(description, amount, category) {
-    const transactionRow = document.createElement('tr');
-
-    transactionRow.innerHTML = `
-        <td>${description}</td>
-        <td>${category}</td>
-        <td>${amount.toFixed(2)}</td>
-        <td><button class="delete-btn">Delete</button></td>
-    `;
-
-    transactionList.appendChild(transactionRow);
-
-    transactionRow.querySelector('.delete-btn').addEventListener('click', function() {
-        transactionRow.remove();
-        updateSummary();
-    });
 }
 
-function updateSummary() {
-    let totalExpenses = 0;
-    let totalIncomes = 0;
+function addExpense() {
+    const description = document.getElementById('expense-description').value;
+    const category = document.getElementById('expense-category').value;
+    const amount = parseFloat(document.getElementById('expense-amount').value);
+    if (description && amount) {
+        totalExpenses += amount;
+        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+        addTransactionToHistory(description, category, amount, 'Expense');
+        clearInputs(['expense-description', 'expense-amount']);
+        showModal(); // Show success modal
+    }
+}
 
-    const transactions = transactionList.querySelectorAll('tr');
+function addTransactionToHistory(description, category, amount, type) {
+    const table = document.getElementById('transaction-history');
+    const row = table.insertRow();
+    row.insertCell(0).innerText = description;
+    row.insertCell(1).innerText = category;
+    row.insertCell(2).innerText = `${amount.toFixed(2)}XAF`;
+    row.insertCell(3).innerText = type;
+    const deleteCell = row.insertCell(4);
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.onclick = function () {
+        deleteTransaction(row);
+    };
+    deleteCell.appendChild(deleteButton);
+    updateBalance();
+    saveData(); // Save the data after adding a transaction
+}
 
-    transactions.forEach(function(transaction) {
-        const amount = parseFloat(transaction.children[2].textContent);
-        const category = transaction.children[1].textContent;
+function updateBalance() {
+    const balance = totalIncome - totalExpenses;
+    document.getElementById('balance').innerText = balance.toFixed(2);
+}
 
-        if (category === 'Income') {
-            totalIncomes += amount;
-        } else {
+function deleteTransaction(row) {
+    const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+    const type = row.cells[3].innerText;
+    if (type === 'Income') {
+        totalIncome -= amount;
+    } else {
+        totalExpenses -= amount;
+    }
+    row.remove(); // Remove the transaction row
+    recalculateSummary(); // Recalculate totals after deletion
+}
+
+function recalculateSummary() {
+    totalIncome = 0;
+    totalExpenses = 0;
+    const table = document.getElementById('transaction-history');
+    const rows = table.getElementsByTagName('tr');
+    for (let row of rows) {
+        const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+        const type = row.cells[3].innerText;
+        if (type === 'Income') {
+            totalIncome += amount;
+        } else if (type === 'Expense') {
             totalExpenses += amount;
         }
+    }
+    document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+    document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+    updateBalance();
+}
+
+function clearInputs(inputIds) {
+    inputIds.forEach(id => {
+        document.getElementById(id).value = '';
     });
-
-    totalExpense.textContent = totalExpenses.toFixed(2);
-    totalIncome.textContent = totalIncomes.toFixed(2);
-    balance.textContent = (totalIncomes - totalExpenses).toFixed(2);
 }
 
-function clearInputs() {
-    expenseInput.value = '';
-    amountInput.value = '';
-    categoryInput.value = 'Expense';
+function clearAll() {
+    totalIncome = 0;
+    totalExpenses = 0;
+    document.getElementById('total-income').innerText = '0';
+    document.getElementById('total-expenses').innerText = '0';
+    document.getElementById('balance').innerText = '0';
+    document.getElementById('transaction-history').innerHTML = ''; // Clear the table
+    localStorage.removeItem('budgetData'); // Clear saved data
 }
+
+function saveData() {
+    const data = {
+        totalIncome,
+        totalExpenses,
+        transactionHistory: document.getElementById('transaction-history').innerHTML
+    };
+    localStorage.setItem('budgetData', JSON.stringify(data));
+}
+
+function loadData() {
+    const data = JSON.parse(localStorage.getItem('budgetData'));
+    if (data) {
+        totalIncome = data.totalIncome;
+        totalExpenses = data.totalExpenses;
+        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+        document.getElementById('balance').innerText = (totalIncome - totalExpenses).toFixed(2);
+        document.getElementById('transaction-history').innerHTML = data.transactionHistory;
+    }
+}
+
+// Modal Functions
+function showModal() {
+    document.getElementById('successModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('successModal').style.display = 'none';
+}
+
+// Load data on page load
+window.onload = loadData;
