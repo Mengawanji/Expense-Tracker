@@ -1,182 +1,217 @@
-/* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Poppins, sans-serif;
-}
-:root {
-  --bg-color: #f6f8fa;
-  --text-color: #000000; 
-  --main-color: #ffd65a; 
-}
+
 body {
-  padding: 2rem;
-  background-color: var(--bg-color);
-  color: #000000 ;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eae1e1;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
 h1 {
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-main {
-  max-width: 400px;
-  margin: 1 rem auto;
-  background-color: #fff;
-  padding: 1rem;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-}
-
-header {
-  background-color: var(--main-color);
-  padding: 1rem;
-  text-align: center;
-  border-radius: 5px;
-  display: flex;
-  flex-wrap: wrap;
-
-}
-header div {
-  padding: 5px;
-}
-header div:first-child {
-  flex-basis: 100%;
-  font-size: 2.25rem;
-  font-weight: 600;
-}
-header div:nth-child(n + 2) {
-  flex-basis: 50%;
-  font-size: 1.25rem;
-  font-weight: 500;
-} 
-header h5 {
-  font-size: 0.75rem;
-  font-size: 600;
-  text-transform: uppercase;
-}
-
-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-form input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  height: 42px;
-  font-family: "Poppins", sans-serif;
-  font-size: 1rem;
-}
-
-  /* form button {
-    background-color: var(--main-color);
-    color: #fff;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 600;
-   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-    
-  } */
-
-/* 
-button {
-  height: 45px;
-  width: 100%;
-  background-color: var(--main-color);
-  border: 1px;
-  border-radius: 4px;
-  color: white;
-  font-size: 18px;
-}
-button:hover {
-  background: #000000;
-  cursor: pointer;
-}
-form div:first-child {
-  flex-basis: 100%;
-}
-
-form div:nth-child(n + 2) {
-  flex-basis: calc(50% - 5px);
-} 
-
-form label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-h3, 
-header {
-  margin-bottom: 0.5rem;
-}
-
-ul {
-  list-style-type: none;
-}
-
-ul li {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 5px 10px;
-  position: relative;
-}
-
-ul li:hover {
-  background: rgba(0,0,0,0.1);  
-}
-.name {
-  flex: 1;  
-}
-.name h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: capitalize;  
-}
-
-.name p {
-  font-size: 0.8rem;
-  color: #555;    
-}
-
-.amount {
-    font-weight: 600;
-}
-
-.amount.income {
-  color: yellowgreen;  
-}
-
-.amount.expense {
-  color: indianred;  
-}
-
-.action {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #f00;
-  color: #fff;
-  height: 100%;
-  width: 50px;
-  display: grid;
-  place-items: center;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: all 300ms;
-}
-
-ul li:hover .action {
-  transform: scale(1);    
-     
-}
-
-
-#status {
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 20px;
+    color: #000000; 
 }
-   */
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    margin-bottom: 15px;
+    color: #0894f8;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.input-group input,
+.input-group select {
+    flex: 2;
+    padding: 10px;
+    border: 2px solid rgb(156, 152, 152); 
+    border-radius: 5px;
+}
+
+.button-group {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.button-group button {
+    background-color: #b2c0ff; 
+    color: #000;
+    padding: 10px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    background-color: #000000;
+    color: #fff;
+}
+
+.summary {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #c5e6ff;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.summary h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.summary p {
+    font-size: 1.5em;
+    color: #000;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    border: 2px solid #e7e4ed; 
+    text-align: center;
+}
+
+table th {
+    background-color: #e7e4ed; 
+    color: #000;
+}
+
+table td {
+    background-color:#e7e4ed; 
+    border-radius: 5px;
+}
+
+table td button {
+    background-color: #b2c0ff; 
+    border-radius: 5px;
+    color: #000;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+table td button:hover {
+    background-color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* New Style for Clear All Button */
+.clear-button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.clear-button-group button {
+    background-color: #b2c0ff; 
+    color: #000000;
+    padding: 10px 25px;
+    border: none;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-button-group button:hover {
+    background-color: #000;
+    color: #FFF;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #FFF;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #060505;
+}
+
+.modal-content p {
+    color: #333;
+}
+
+.close-button {
+    background-color: #b2c0ff; 
+    color: #000000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.close-button:hover {
+    background-color: #000;
+    color: #FFF;
+}
+
+#total-income {
+    color: rgb(5, 181, 5);
+}
+
+#total-expenses {
+    color: rgb(255, 0, 0);
+}

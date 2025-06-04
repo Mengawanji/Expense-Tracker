@@ -1,69 +1,130 @@
+let totalIncome = 0;
+let totalExpenses = 0;
 
-// const transaction = [
-//      {
-//         id: 1,
-//         name: 'salary',
-//         amount: 5000,
-//         date: new Date(),
-//         type: 'income'
-//      },
-//      {
-//         id: 2,
-//         name: 'haircut',
-//         amount: 20,
-//         date: new Date(),
-//         type: 'expense'
-//      },
-//      {
-//         id: 3,
-//         name: 'concert ticket ',
-//         amount: 350,
-//         date: new Date(),
-//         type: 'expense'
-//      },
-// ];
+function addIncome() {
+    const description = document.getElementById('income-description').value;
+    const amount = parseFloat(document.getElementById('income-amount').value);
+    if (description && amount) {
+        totalIncome += amount;
+        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+        addTransactionToHistory(description, 'Income', amount, 'Income');
+        clearInputs(['income-description', 'income-amount']);
+        showModal(); // Show success modal
+    }
+}
 
-// const formatter = new Intl.NumberFormat('en-US', {
-//     style: 'currency',
-//     currency: 'USD',
-//     signDisplay: 'always',
-// })
+function addExpense() {
+    const description = document.getElementById('expense-description').value;
+    const category = document.getElementById('expense-category').value;
+    const amount = parseFloat(document.getElementById('expense-amount').value);
+    if (description && amount) {
+        totalExpenses += amount;
+        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+        addTransactionToHistory(description, category, amount, 'Expense');
+        clearInputs(['expense-description', 'expense-amount']);
+        showModal(); // Show success modal
+    }
+}
 
+function addTransactionToHistory(description, category, amount, type) {
+    const table = document.getElementById('transaction-history');
+    const row = table.insertRow();
+    row.insertCell(0).innerText = description;
+    row.insertCell(1).innerText = category;
+    row.insertCell(2).innerText = `${amount.toFixed(2)}XAF`;
+    row.insertCell(3).innerText = type;
+    const deleteCell = row.insertCell(4);
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.onclick = function () {
+        deleteTransaction(row);
+    };
+    deleteCell.appendChild(deleteButton);
+    updateBalance();
+    saveData(); // Save the data after adding a transaction
+}
 
-// const list = document.getElementById('transactionList');
-// const status = document.getElementById('status');
+function updateBalance() {
+    const balance = totalIncome - totalExpenses;
+    document.getElementById('balance').innerText = balance.toFixed(2);
+}
 
-// function renderList() {
-//     list.innerHTML = " ";
+function deleteTransaction(row) {
+    const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+    const type = row.cells[3].innerText;
+    if (type === 'Income') {
+        totalIncome -= amount;
+    } else {
+        totalExpenses -= amount;
+    }
+    row.remove(); 
+    recalculateSummary(); 
+}
 
-//     if (transactions.length === 0) {
-//         status.textContent = "No transactions."
-//         return;
-//     }
+function recalculateSummary() {
+    totalIncome = 0;
+    totalExpenses = 0;
+    const table = document.getElementById('transaction-history');
+    const rows = table.getElementsByTagName('tr');
+    for (let row of rows) {
+        const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+        const type = row.cells[3].innerText;
+        if (type === 'Income') {
+            totalIncome += amount;
+        } else if (type === 'Expense') {
+            totalExpenses += amount;
+        }
+    }
+    document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+    document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+    updateBalance();
+}
 
-//     transactions.forEach(({ id, name, amount, date, type}) => {
-//         const li = document.createElement('li');
+function clearInputs(inputIds) {
+    inputIds.forEach(id => {
+        document.getElementById(id).value = '';
+    });
+}
 
-//         li.innerHTML = `
-//             <div class="name">
-//                 <h4> ${name}</h4>
-//                 <p> ${new Date(date).toLocaleDateString()}</p>
-//             </div>
-//             <div class="amount ${type}">
-//                 <span> ${formatter.format(amount)}</span>
-//             </div>
+function clearAll() {
+    totalIncome = 0;
+    totalExpenses = 0;
+    document.getElementById('total-income').innerText = '0';
+    document.getElementById('total-expenses').innerText = '0';
+    document.getElementById('balance').innerText = '0';
+    document.getElementById('transaction-history').innerHTML = ''; // Clear the table
+    localStorage.removeItem('budgetData'); // Clear saved data
+}
 
-//             <div class="action"> 
-//                 <i class="fa fa-times" aria-hidden="true"></i>
-//             </div>
+function saveData() {
+    const data = {
+        totalIncome,
+        totalExpenses,
+        transactionHistory: document.getElementById('transaction-history').innerHTML
+    };
+    localStorage.setItem('budgetData', JSON.stringify(data));
+}
 
+function loadData() {
+    const data = JSON.parse(localStorage.getItem('budgetData'));
+    if (data) {
+        totalIncome = data.totalIncome;
+        totalExpenses = data.totalExpenses;
+        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+        document.getElementById('balance').innerText = (totalIncome - totalExpenses).toFixed(2);
+        document.getElementById('transaction-history').innerHTML = data.transactionHistory;
+    }
+}
 
+// Modal Functions
+function showModal() {
+    document.getElementById('successModal').style.display = 'flex';
+}
 
-//         `;
+function closeModal() {
+    document.getElementById('successModal').style.display = 'none';
+}
 
-//         list.appendChild(li);
-
-//     });
-// }
- 
-// renderList();
+// Load data on page load
+window.onload = loadData;
