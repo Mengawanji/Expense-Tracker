@@ -6,7 +6,7 @@ function addIncome() {
     const amount = parseFloat(document.getElementById('income-amount').value);
     if (description && amount) {
         totalIncome += amount;
-        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
+        document.getElementById('total-income').innerText = totalIncome;
         addTransactionToHistory(description, 'Income', amount, 'Income');
         clearInputs(['income-description', 'income-amount']);
         showModal(); // Show success modal
@@ -19,7 +19,7 @@ function addExpense() {
     const amount = parseFloat(document.getElementById('expense-amount').value);
     if (description && amount) {
         totalExpenses += amount;
-        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+        document.getElementById('total-expenses').innerText = totalExpenses;
         addTransactionToHistory(description, category, amount, 'Expense');
         clearInputs(['expense-description', 'expense-amount']);
         showModal(); // Show success modal
@@ -31,7 +31,7 @@ function addTransactionToHistory(description, category, amount, type) {
     const row = table.insertRow();
     row.insertCell(0).innerText = description;
     row.insertCell(1).innerText = category;
-    row.insertCell(2).innerText = `${amount.toFixed(2)}XAF`;
+    row.insertCell(2).innerText = `${amount}XAF`;
     row.insertCell(3).innerText = type;
     const deleteCell = row.insertCell(4);
     const deleteButton = document.createElement('button');
@@ -46,11 +46,11 @@ function addTransactionToHistory(description, category, amount, type) {
 
 function updateBalance() {
     const balance = totalIncome - totalExpenses;
-    document.getElementById('balance').innerText = balance.toFixed(2);
+    document.getElementById('balance').innerText = balance;
 }
 
 function deleteTransaction(row) {
-    const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+    const amount = parseFloat(row.cells[2].innerText.replace('XAF',''));
     const type = row.cells[3].innerText;
     if (type === 'Income') {
         totalIncome -= amount;
@@ -67,7 +67,7 @@ function recalculateSummary() {
     const table = document.getElementById('transaction-history');
     const rows = table.getElementsByTagName('tr');
     for (let row of rows) {
-        const amount = parseFloat(row.cells[2].innerText.replace('','XAF'));
+        const amount = parseFloat(row.cells[2].innerText.replace('XAF', ' '));
         const type = row.cells[3].innerText;
         if (type === 'Income') {
             totalIncome += amount;
@@ -75,8 +75,8 @@ function recalculateSummary() {
             totalExpenses += amount;
         }
     }
-    document.getElementById('total-income').innerText = totalIncome.toFixed(2);
-    document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
+    document.getElementById('total-income').innerText = totalIncome;
+    document.getElementById('total-expenses').innerText = totalExpenses;
     updateBalance();
 }
 
@@ -110,9 +110,9 @@ function loadData() {
     if (data) {
         totalIncome = data.totalIncome;
         totalExpenses = data.totalExpenses;
-        document.getElementById('total-income').innerText = totalIncome.toFixed(2);
-        document.getElementById('total-expenses').innerText = totalExpenses.toFixed(2);
-        document.getElementById('balance').innerText = (totalIncome - totalExpenses).toFixed(2);
+        document.getElementById('total-income').innerText = totalIncome;
+        document.getElementById('total-expenses').innerText = totalExpenses;
+        document.getElementById('balance').innerText = (totalIncome - totalExpenses);
         document.getElementById('transaction-history').innerHTML = data.transactionHistory;
     }
 }
