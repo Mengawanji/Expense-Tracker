@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Budget Planner</title>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -23,7 +24,7 @@
                 <input type="number" id="income-amount" placeholder="e.g. 1.000 XAF">
             </div>
             <div class="button-group">
-                <button onclick="addIncome()">Add Income</button>
+                <button onclick="addIncome()"><i class="material-icons">add_box</i>    </button>
             </div>
         </div>
 
@@ -49,7 +50,7 @@
                 <input type="number" id="expense-amount" placeholder="e.g. 500 XAF">
             </div>
             <div class="button-group">
-                <button onclick="addExpense()">Add Expense</button>
+                <button onclick="addExpense()"><i class="material-icons">add_box</i></button>
             </div>
         </div>
 
@@ -58,8 +59,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Description</th>
                         <th>Category</th>
+                        <th>Description</th>
                         <th>Amount </th>
                         <th>Type</th>
                         <th>Action</th> 
