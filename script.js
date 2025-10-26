@@ -34,7 +34,6 @@ function addTransactionToHistory(description, category, amount, type) {
 
     row.insertCell(2).innerText = `${amount}XAF`;
     row.insertCell(3).innerText = type;
-    const deleteCell = row.insertCell(4);
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = '<i class="material-icons">delete</i>';
     deleteButton.onclick = function () {
