@@ -1,12 +1,16 @@
 let totalIncome = 0;
 let totalExpenses = 0;
+const modal = document.getElementById('successModal')
+const closeBtn = document.getElementById('closeBtn')
 
 function addIncome() {
     const description = document.getElementById('income-description').value;
     const amount = parseFloat(document.getElementById('income-amount').value);
+    const successMessage = document.querySelector('#successModal p')
     if (description && amount) {
         totalIncome += amount;
         document.getElementById('total-income').innerText = totalIncome;
+        successMessage.textContent = 'Your transaction has been added successfully!';
         addTransactionToHistory(description, 'Income', amount, 'Income');
         clearInputs(['income-description', 'income-amount']);
         showModal(); // Show success modal
@@ -17,9 +21,11 @@ function addExpense() {
     const description = document.getElementById('expense-description').value;
     const category = document.getElementById('expense-category').value;
     const amount = parseFloat(document.getElementById('expense-amount').value);
+    const successMessage = document.querySelector('#successModal p')
     if (description && amount) {
         totalExpenses += amount;
         document.getElementById('total-expenses').innerText = totalExpenses;
+        successMessage.textContent = 'Your transaction has been added successfully!';
         addTransactionToHistory(description, category, amount, 'Expense');
         clearInputs(['expense-description', 'expense-amount']);
         showModal(); // Show success modal
@@ -31,22 +37,28 @@ function addTransactionToHistory(description, category, amount, type) {
     const row = table.insertRow();
     row.insertCell(0).innerText = category;
     row.insertCell(1).innerText = description;
-
     row.insertCell(2).innerText = `${amount}XAF`;
     row.insertCell(3).innerText = type;
+    const deleteCell = row.insertCell(4);
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = '<i class="material-icons">delete</i>';
-    deleteButton.onclick = function () {
-        deleteTransaction(row);
-    };
+    // Remove the onclick line below
     deleteCell.appendChild(deleteButton);
     updateBalance();
-    saveData(); // Save the data after adding a transaction
+    saveData();
 }
 
 function updateBalance() {
-    const balance = totalIncome - totalExpenses;
-    document.getElementById('balance').innerText = balance;
+  const balance = totalIncome - totalExpenses;
+  const balanceElement = document.getElementById('balance');
+
+  balanceElement.innerText = balance;
+
+  if (balance < 1) {
+    balanceElement.style.color = 'red';
+  } else {
+    balanceElement.style.color = 'green';
+  }
 }
 
 function deleteTransaction(row) {
@@ -59,6 +71,7 @@ function deleteTransaction(row) {
     }
     row.remove(); 
     recalculateSummary(); 
+    delMessage ();
 }
 
 function recalculateSummary() {
@@ -96,6 +109,17 @@ function clearAll() {
     localStorage.removeItem('budgetData'); // Clear saved data
 }
 
+function setupEventDelegation() {
+    const table = document.getElementById('transaction-history');
+    table.addEventListener('click', function(e) {
+        if (e.target.closest('button') || e.target.closest('.material-icons')) {
+            const button = e.target.closest('button');
+            const row = button.closest('tr');
+            deleteTransaction(row);
+        }
+    });
+}
+
 function saveData() {
     const data = {
         totalIncome,
@@ -117,14 +141,28 @@ function loadData() {
     }
 }
 
+function delMessage () {
+    modal.style.display = 'flex';
+    const successMessage = document.querySelector('#successModal p')
+          successMessage.textContent = 'Your transaction has been deleted successfully!';
+}
 // Modal Functions
 function showModal() {
-    document.getElementById('successModal').style.display = 'flex';
+    modal.style.display = 'flex';
+
 }
 
 function closeModal() {
-    document.getElementById('successModal').style.display = 'none';
+    modal.style.display = 'none';
 }
 
-// Load data on page load
-window.onload = loadData;
+window.onload = function() {
+    loadData();
+    setupEventDelegation();
+};
+  
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && modal.style.display === 'flex') {
+    closeModal();
+    }
+});
