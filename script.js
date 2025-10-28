@@ -164,8 +164,8 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
-document.addEventListener('DOMContentLoaded', function() {
-    addIncome();
-    addExpense(); 
-    clearAll();
-});
+document.addEventListener('DOMContentLoaded', function () {
+  addIncome()
+  addExpense()
+  clearAll()
+})

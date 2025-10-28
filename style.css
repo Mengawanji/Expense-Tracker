@@ -57,6 +57,7 @@ h1 {
   text-align: right;
   margin-top: 20px;
 }
+
 .button-group button {
   background-color: #c5e6ff;
   color: #000;
@@ -117,15 +118,6 @@ table th {
 table td {
   background-color: #e7e4ed;
   border-radius: 5px;
-}
-
-.button-group button {
-  border-radius: 5px;
-  color: #000;
-  padding: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .clear-button-group button {
