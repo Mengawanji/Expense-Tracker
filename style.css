@@ -68,11 +68,6 @@ h1 {
   transition: background-color 0.3s ease;
 }
 
-.button-group button:hover {
-  background-color: #000;
-  color: #fff;
-}
-
 .summary {
   margin-top: 30px;
   padding: 20px;
@@ -137,6 +132,11 @@ table td {
   background-color: #000;
   color: #fff;
   transform: scale(1.05);
+}
+
+.button-group button:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 .modal {
