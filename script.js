@@ -163,3 +163,9 @@ document.addEventListener('keydown', function (event) {
     closeModal()
   }
 })
+
+document.addEventListener('DOMContentLoaded', function() {
+    addIncome();
+    addExpense(); 
+    clearAll();
+});
