@@ -17,7 +17,7 @@ function addIncome () {
 }
 
 function addExpense () {
-  const description = document.getElementById('expense-description').value
+  const description = document.getElementById('expense-description').value || "- -"
   const category = document.getElementById('expense-category').value
   const amount = parseFloat(document.getElementById('expense-amount').value)
   const successMessage = document.querySelector('#success-modal p')
@@ -27,7 +27,7 @@ function addExpense () {
     successMessage.textContent = 'Your transaction has been added successfully!'
     addTransactionToHistory(description, category, amount, 'Expense')
     clearInputs(['expense-description', 'expense-amount'])
-    showModal() // Show success modal
+    showModal()
   }
 }
 
@@ -35,8 +35,8 @@ function addTransactionToHistory (description, category, amount, type) {
   const table = document.getElementById('transaction-history')
   const row = table.insertRow()
   row.insertCell(0).innerText = category
-  row.insertCell(1).innerText = description
-  row.insertCell(2).innerText = `${amount}XAF`
+  row.insertCell(1).innerText = description || "- -"
+  row.insertCell(2).innerText = `${amount}`
   row.insertCell(3).innerText = type
   const deleteCell = row.insertCell(4)
   const deleteButton = document.createElement('button')
@@ -70,6 +70,7 @@ function deleteTransaction (row) {
   row.remove()
   recalculateSummary()
   delMessage()
+  saveData()
 }
 
 function recalculateSummary () {
@@ -136,6 +137,8 @@ function loadData () {
     document.getElementById('total-expenses').innerText = totalExpenses
     document.getElementById('balance').innerText = (totalIncome - totalExpenses)
     document.getElementById('transaction-history').innerHTML = data.transactionHistory
+
+    setupEventDelegation()
   }
 }
 
@@ -143,6 +146,7 @@ function delMessage () {
   modal.style.display = 'flex'
   const successMessage = document.querySelector('#success-modal p')
   successMessage.textContent = 'Your transaction has been deleted successfully!'
+  successMessage.style.color = 'red'
 }
 // Modal Functions
 function showModal () {
@@ -153,11 +157,6 @@ function closeModal () {
   modal.style.display = 'none'
 }
 
-window.onload = function () {
-  loadData()
-  setupEventDelegation()
-}
-
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Enter' && modal.style.display === 'flex') {
     closeModal()
@@ -165,7 +164,5 @@ document.addEventListener('keydown', function (event) {
 })
 
 document.addEventListener('DOMContentLoaded', function () {
-  addIncome()
-  addExpense()
-  clearAll()
+  loadData()
 })
