@@ -3,6 +3,7 @@ let totalExpenses = 0
 const modal = document.getElementById('success-modal')
 
 function addIncome () {
+  modal.style.display = 'flex'
   const description = document.getElementById('income-description').value
   const amount = parseFloat(document.getElementById('income-amount').value)
   const successMessage = document.querySelector('#success-modal p')
@@ -10,6 +11,7 @@ function addIncome () {
     totalIncome += amount
     document.getElementById('total-income').innerText = totalIncome
     successMessage.textContent = 'Your transaction has been added successfully!'
+    successMessage.style.color= 'green'
     addTransactionToHistory(description, 'Income', amount, 'Income')
     clearInputs(['income-description', 'income-amount'])
     showModal() // Show success modal
@@ -17,6 +19,7 @@ function addIncome () {
 }
 
 function addExpense () {
+  modal.style.display = 'flex'
   const description = document.getElementById('expense-description').value || "- -"
   const category = document.getElementById('expense-category').value
   const amount = parseFloat(document.getElementById('expense-amount').value)
@@ -25,6 +28,7 @@ function addExpense () {
     totalExpenses += amount
     document.getElementById('total-expenses').innerText = totalExpenses
     successMessage.textContent = 'Your transaction has been added successfully!'
+    successMessage.style.color= 'green'
     addTransactionToHistory(description, category, amount, 'Expense')
     clearInputs(['expense-description', 'expense-amount'])
     showModal()
@@ -146,7 +150,7 @@ function delMessage () {
   modal.style.display = 'flex'
   const successMessage = document.querySelector('#success-modal p')
   successMessage.textContent = 'Your transaction has been deleted successfully!'
-  successMessage.style.color = 'red'
+  successMessage.style.color= 'red'
 }
 // Modal Functions
 function showModal () {
