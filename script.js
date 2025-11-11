@@ -2,33 +2,37 @@ let totalIncome = 0
 let totalExpenses = 0
 const modal = document.getElementById('success-modal')
 
-function addIncome () {
-  modal.style.display = 'flex'
-  const description = document.getElementById('income-description').value
+function addIncome(event) {
+  event.preventDefault()
+
+  const description = document.getElementById('income-description').value.trim() || "- -"
   const amount = parseFloat(document.getElementById('income-amount').value)
   const successMessage = document.querySelector('#success-modal p')
-  if (description && amount) {
+
+  if (!isNaN(amount) && amount > 0) {
     totalIncome += amount
-    document.getElementById('total-income').innerText = totalIncome
+    document.getElementById('total-income').innerText = totalIncome.toLocaleString()
     successMessage.textContent = 'Your transaction has been added successfully!'
-    successMessage.style.color= 'green'
+    successMessage.style.color = 'green'
     addTransactionToHistory(description, 'Income', amount, 'Income')
     clearInputs(['income-description', 'income-amount'])
-    showModal() // Show success modal
+    showModal()
   }
 }
 
-function addExpense () {
-  modal.style.display = 'flex'
-  const description = document.getElementById('expense-description').value || "- -"
-  const category = document.getElementById('expense-category').value
+function addExpense(event) {
+  event.preventDefault()
+
+  const description = document.getElementById('expense-description').value.trim() || "- -"
+  const category = document.getElementById('expense-category').value;
   const amount = parseFloat(document.getElementById('expense-amount').value)
   const successMessage = document.querySelector('#success-modal p')
-  if (description && amount) {
+
+  if (!isNaN(amount) && amount > 0) {
     totalExpenses += amount
-    document.getElementById('total-expenses').innerText = totalExpenses
+    document.getElementById('total-expenses').innerText = totalExpenses.toLocaleString()
     successMessage.textContent = 'Your transaction has been added successfully!'
-    successMessage.style.color= 'green'
+    successMessage.style.color = 'green'
     addTransactionToHistory(description, category, amount, 'Expense')
     clearInputs(['expense-description', 'expense-amount'])
     showModal()
@@ -40,7 +44,7 @@ function addTransactionToHistory (description, category, amount, type) {
   const row = table.insertRow()
   row.insertCell(0).innerText = category
   row.insertCell(1).innerText = description || "- -"
-  row.insertCell(2).innerText = `${amount}`
+  row.insertCell(2).innerText = amount.toLocaleString()
   row.insertCell(3).innerText = type
   const deleteCell = row.insertCell(4)
   const deleteButton = document.createElement('button')
@@ -54,7 +58,7 @@ function updateBalance () {
   const balance = totalIncome - totalExpenses
   const balanceElement = document.getElementById('balance')
 
-  balanceElement.innerText = balance
+  balanceElement.innerText = balance.toLocaleString()
 
   if (balance < 1) {
     balanceElement.style.color = 'red'
@@ -108,13 +112,13 @@ function clearAll () {
   document.getElementById('total-income').innerText = '0'
   document.getElementById('total-expenses').innerText = '0'
   document.getElementById('balance').innerText = '0'
-  document.getElementById('transaction-history').innerHTML = '' // Clear the table
-  localStorage.removeItem('budgetData') // Clear saved data
+  document.getElementById('transaction-history').innerHTML = ''
+  localStorage.removeItem('budgetData')
 }
 
-function setupEventDelegation () {
+function setupEventDelegation() {
   const table = document.getElementById('transaction-history')
-  table.addEventListener('click', function (e) {
+  table.addEventListener('click', function(e) {
     if (e.target.closest('button') || e.target.closest('.material-icons')) {
       const button = e.target.closest('button')
       const row = button.closest('tr')
@@ -122,6 +126,11 @@ function setupEventDelegation () {
     }
   })
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  setupEventDelegation()
+});
 
 function saveData () {
   const data = {
@@ -167,6 +176,8 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   loadData()
+  setupEventDelegation()
 })
+

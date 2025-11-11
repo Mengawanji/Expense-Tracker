@@ -192,6 +192,16 @@ table td {
   color: #fff;
 }
 
+label[for]::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
+input:required {
+  border-left: 3px solid red;
+}
+
 #total-income {
   color: rgb(5 181 5);
 }
