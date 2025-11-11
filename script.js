@@ -88,19 +88,25 @@ function recalculateSummary () {
   totalExpenses = 0
   const table = document.getElementById('transaction-history')
   const rows = table.getElementsByTagName('tr')
+
   for (const row of rows) {
-    const amount = parseFloat(row.cells[2].innerText.replace('XAF', ' '))
+    const amount = parseFloat(
+      row.cells[2].innerText.replace(/[^0-9.-]+/g, '')
+    )
     const type = row.cells[3].innerText
+
     if (type === 'Income') {
       totalIncome += amount
     } else if (type === 'Expense') {
       totalExpenses += amount
     }
   }
+
   document.getElementById('total-income').innerText = totalIncome
   document.getElementById('total-expenses').innerText = totalExpenses
   updateBalance()
 }
+
 
 function clearInputs (inputIds) {
   inputIds.forEach(id => {
