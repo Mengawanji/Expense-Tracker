@@ -102,8 +102,8 @@ function recalculateSummary () {
     }
   }
 
-  document.getElementById('total-income').innerText = totalIncome
-  document.getElementById('total-expenses').innerText = totalExpenses
+  document.getElementById('total-income').innerText = totalIncome.toLocaleString()
+  document.getElementById('total-expenses').innerText = totalExpenses.toLocaleString()
   updateBalance()
 }
 
