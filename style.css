@@ -214,6 +214,23 @@ input:required {
   border: none;
 }
 
+.delete-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.delete-btn i {
+  color: #ff4d4d;
+  font-size: 20px;
+}
+
+.delete-btn:hover i {
+  color: #ff0000;
+  transform: scale(1.2);
+}
+
 @media (max-width: 412px) {
   .table-container {
     margin-top: 20px;

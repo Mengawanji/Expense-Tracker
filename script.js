@@ -48,11 +48,13 @@ function addTransactionToHistory (description, category, amount, type) {
   row.insertCell(3).innerText = type
   const deleteCell = row.insertCell(4)
   const deleteButton = document.createElement('button')
+  deleteButton.className = 'delete-btn';
   deleteButton.innerHTML = '<i class="material-icons">delete</i>'
   deleteCell.appendChild(deleteButton)
   updateBalance()
   saveData()
 }
+
 
 function updateBalance () {
   const balance = totalIncome - totalExpenses
